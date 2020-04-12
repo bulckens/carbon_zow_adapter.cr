@@ -1,1 +1,3 @@
-require "./carbon_zow_adapter/**"
+require "zow_token"
+require "carbon"
+require "./carbon/**"
