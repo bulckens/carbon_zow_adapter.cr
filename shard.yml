@@ -1,0 +1,22 @@
+name: carbon_zow_adapter
+version: 0.1.0
+
+authors:
+  - wout <wout@mick-wout.com>
+
+dependencies:
+  zow_token:
+    git: git@github.com:bulckens/zow_token.cr.git
+
+development_dependencies:
+  spec_mirror:
+    github: tilishop/spec_mirror.cr
+  ameba:
+    github: crystal-ameba/ameba
+    version: ~> 0.11.0
+  carbon:
+    github: luckyframework/carbon
+
+crystal: 0.34.0
+
+license: MIT
