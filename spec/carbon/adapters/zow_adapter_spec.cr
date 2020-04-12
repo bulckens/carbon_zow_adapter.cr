@@ -4,20 +4,40 @@ describe Carbon::ZowAdapter do
   describe ".deliver_now" do
     it "delivers the email successfully" do
       WebMock.stub(:post, "https://mailer.zwartopwit.be/api/v1/zwartopwit_dev/mails.json")
-        .to_return(body: %({"success":"mail.created","mail":{"to":"a@b.c","from":"d@e.f","subject":"Hello World","language":"en","text":"Hello, World!","entity_id":1,"updated_at":"2017-10-15 12:51:18","created_at":"2017-10-15 12:51:18","id":2},"current_entity":{"id":1,"key":"zwartopwit","created_at":"2017-10-13 12:51:18","updated_at":"2017-10-13 12:51:18"}}))
+        .to_return(body: %({"success":"mail.created"}))
 
       send_email_to_zow_mailer text_body: "text template",
         to: [Carbon::Address.new("w@zwartopwit.be")]
     end
 
-    pending "delivers emails with reply_to set" do
+    it "delivers emails with reply_to set" do
+      WebMock.stub(:post, "https://mailer.zwartopwit.be/api/v1/zwartopwit_dev/mails.json")
+        .to_return(body: %({"success":"mail.created"}))
+
       send_email_to_zow_mailer text_body: "text template",
         to: [Carbon::Address.new("w@zwartopwit.be")],
         headers: {"Reply-To" => "noreply@zwartopwit.be"}
     end
+
+    it "raises an error when data is missing" do
+      WebMock.stub(:post, "https://mailer.zwartopwit.be/api/v1/zwartopwit_dev/mails.json")
+        .to_return(status: 422, body: %({"error":"mail.invalid"}))
+
+      expect_raises(Carbon::ZowAdapter::RequestException) do
+        send_email_to_zow_mailer text_body: "text template",
+          to: [] of Carbon::Address
+      end
+    end
   end
 
   describe ".deliver_later" do
+    it "delivers the email successfully later" do
+      WebMock.stub(:post, "https://mailer.zwartopwit.be/api/v1/zwartopwit_dev/mails.json")
+        .to_return(body: %({"success":"mail.created"}))
+
+      send_email_to_zow_mailer_later text_body: "text template",
+        to: [Carbon::Address.new("w@zwartopwit.be")]
+    end
   end
 
   describe Carbon::ZowAdapter::Email do
@@ -88,9 +108,19 @@ private def params_for(**email_attrs)
 end
 
 private def send_email_to_zow_mailer(**email_attrs)
+  prepare_adapter.deliver_now(prepare_email(**email_attrs))
+end
+
+private def send_email_to_zow_mailer_later(**email_attrs)
+  prepare_adapter.deliver_at(prepare_email(**email_attrs), Time.local)
+end
+
+private def prepare_adapter
   secret = ENV.fetch("ZOW_MAILER_SECRET")
   entity = ENV.fetch("ZOW_MAILER_ENTITY")
-  email = FakeEmail.new(**email_attrs)
-  adapter = Carbon::ZowAdapter.new(entity: entity, secret: secret)
-  adapter.deliver_now(email)
+  Carbon::ZowAdapter.new(entity: entity, secret: secret)
+end
+
+private def prepare_email(**email_attrs)
+  FakeEmail.new(**email_attrs)
 end
