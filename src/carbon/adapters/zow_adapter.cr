@@ -1,8 +1,13 @@
 class Carbon::ZowAdapter < Carbon::Adapter
   private getter entity : String
   private getter secret : String
+  private getter language : String
 
-  def initialize(@entity : String, @secret : String)
+  def initialize(
+    @entity : String,
+    @secret : String,
+    @language : String = "en"
+  )
   end
 
   def deliver_now(email : Carbon::Email)
@@ -14,7 +19,7 @@ class Carbon::ZowAdapter < Carbon::Adapter
   end
 
   private def email_instance(email : Carbon::Email)
-    Email.new(email, entity, secret)
+    Email.new(email, entity, secret, language)
   end
 
   class Email
@@ -39,9 +44,9 @@ class Carbon::ZowAdapter < Carbon::Adapter
     end
 
     def deliver
-      client.post(endpoint_with_token, body: params.to_json).tap do |response|
+      client.post(endpoint, body: params.to_json).tap do |response|
         unless response.success?
-          raise JSON.parse(response.body).inspect
+          raise RequestException.from_json(response.body)
         end
       end
     end
@@ -71,10 +76,6 @@ class Carbon::ZowAdapter < Carbon::Adapter
       email.headers.select { |key, _| key.downcase == "reply-to" }.values.first?
     end
 
-    private def endpoint_with_token
-      "#{endpoint}?token=#{token}"
-    end
-
     private def endpoint
       "#{BASE_API_PATH}/#{@entity}#{CREATE_MAIL_PATH}"
     end
@@ -88,6 +89,7 @@ class Carbon::ZowAdapter < Carbon::Adapter
     private def client : HTTP::Client
       @_client ||= HTTP::Client.new(BASE_URI, port: 443, tls: true).tap do |client|
         client.before_request do |request|
+          request.headers["Authentication"] = "Bearer #{token}"
           request.headers["Content-Type"] = "application/json"
         end
       end
