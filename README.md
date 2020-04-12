@@ -1,6 +1,6 @@
-# carbon_zow_adapter
+# carbon_zow_adapter.cr
 
-TODO: Write a description here
+A Zow Mailer API adapter for Carbon, Lucky's mail handler.
 
 ## Installation
 
@@ -9,7 +9,7 @@ Add the dependency to your `shard.yml`:
 ```yaml
 dependencies:
   carbon_zow_adapter:
-    github: your-github-user/carbon_zow_adapter
+    github: bulckens/carbon_zow_adapter
 ```
 
 Run `shards install`
@@ -36,4 +36,4 @@ TODO: Write development instructions here
 
 ## Contributors
 
-- [wout](https://github.com/your-github-user) - creator and maintainer
+- [wout](https://github.com/wout) - creator and maintainer

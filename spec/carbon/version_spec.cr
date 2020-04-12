@@ -3,7 +3,7 @@ require "../spec_helper"
 
 describe Carbon::ZowAdapter::VERSION do
   it "returns the current version" do
-    CarbonZowAdapter::VERSION.should eq(`git describe --abbrev=0 --tags`.strip)
+    Carbon::ZowAdapter::VERSION.should eq(`git describe --abbrev=0 --tags`.strip)
   end
 
   describe "shard.yml" do
