@@ -89,7 +89,7 @@ class Carbon::ZowAdapter < Carbon::Adapter
     private def client : HTTP::Client
       @_client ||= HTTP::Client.new(BASE_URI, port: 443, tls: true).tap do |client|
         client.before_request do |request|
-          request.headers["Authentication"] = "Bearer #{token}"
+          request.headers["Authorization"] = "Bearer #{token}"
           request.headers["Content-Type"] = "application/json"
         end
       end

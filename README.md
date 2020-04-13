@@ -9,22 +9,39 @@ Add the dependency to your `shard.yml`:
 ```yaml
 dependencies:
   carbon_zow_adapter:
-    github: bulckens/carbon_zow_adapter
+    git: git@github.com:bulckens/carbon_zow_adapter.cr.git
 ```
 
 Run `shards install`
 
 ## Usage
 
+Require this shard in Lucky's shards.cr file:
+
 ```crystal
 require "carbon_zow_adapter"
 ```
 
-TODO: Write usage instructions here
+Then set it up in Lucky's email.cr initializer:
 
-## Development
+```crystal
+BaseEmail.configure do |settings|
+  secret = ENV["ZOW_MAILER_SECRET"]
+  entity = ENV["ZOW_MAILER_ENTITY"]
 
-TODO: Write development instructions here
+  settings.adapter = Carbon::ZowAdapter.new(entity: entity, secret: secret)
+end
+```
+
+If you're using an internationalization library, the current language can be
+set as follows:
+
+```crystal
+settings.adapter = Carbon::ZowAdapter.new(
+  entity: entity,
+  secret: secret,
+  language: I18n.locale || "en")
+```
 
 ## Contributing
 
