@@ -6,16 +6,15 @@ authors:
 
 dependencies:
   zow_token:
-    git: git@github.com:bulckens/zow_token.cr.git
+    github: bulckens/zow_token.cr
+    version: ~> 0.2.1
   carbon:
     github: luckyframework/carbon
+    version: ~> 0.2.0
 
 development_dependencies:
-  dotenv:
-    github: gdotdesign/cr-dotenv
-    version: ~> 1.0.0
   spec_mirror:
-    github: tilishop/spec_mirror.cr
+    github: wout/spec_mirror.cr
   webmock:
     github: manastech/webmock.cr
     branch: master
@@ -23,6 +22,6 @@ development_dependencies:
     github: crystal-ameba/ameba
     version: ~> 0.14.0
 
-crystal: ~> 1.2.0
+crystal: ">= 1.0.0"
 
 license: MIT

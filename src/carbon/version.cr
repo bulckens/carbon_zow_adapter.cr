@@ -1,3 +1,3 @@
 class Carbon::ZowAdapter < Carbon::Adapter
-  VERSION = "v0.1.1"
+  VERSION = "0.2.0"
 end

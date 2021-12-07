@@ -21,7 +21,7 @@ describe Carbon::ZowAdapter::RequestException do
           }
         }
       }))
-      details = exception.details.as(Carbon::ZowAdapter::Alias::DetailsHash)
+      details = exception.details.as(Carbon::ZowAdapter::DetailsHash)
       details["to"]["required"].should eq("is required")
     end
   end
