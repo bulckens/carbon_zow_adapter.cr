@@ -1,8 +1,8 @@
 name: carbon_zow_adapter
-version: 0.1.1
+version: 0.2.0
 
 authors:
-  - wout <wout@mick-wout.com>
+  - wout <w@zwartopwit.be>
 
 dependencies:
   zow_token:
@@ -13,7 +13,7 @@ dependencies:
 development_dependencies:
   dotenv:
     github: gdotdesign/cr-dotenv
-    version: ~> 0.7.0
+    version: ~> 1.0.0
   spec_mirror:
     github: tilishop/spec_mirror.cr
   webmock:
@@ -21,8 +21,8 @@ development_dependencies:
     branch: master
   ameba:
     github: crystal-ameba/ameba
-    version: ~> 0.12.0
+    version: ~> 0.14.0
 
-crystal: 0.34.0
+crystal: ~> 1.2.0
 
 license: MIT
