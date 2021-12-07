@@ -9,7 +9,7 @@ Add the dependency to your `shard.yml`:
 ```yaml
 dependencies:
   carbon_zow_adapter:
-    git: git@github.com:bulckens/carbon_zow_adapter.cr.git
+    github: bulckens/carbon_zow_adapter.cr
 ```
 
 Run `shards install`
@@ -26,10 +26,10 @@ Then set it up in Lucky's email.cr initializer:
 
 ```crystal
 BaseEmail.configure do |settings|
-  secret = ENV["ZOW_MAILER_SECRET"]
-  entity = ENV["ZOW_MAILER_ENTITY"]
-
-  settings.adapter = Carbon::ZowAdapter.new(entity: entity, secret: secret)
+  settings.adapter = Carbon::ZowAdapter.new(
+    entity: ENV.fetch("ZOW_MAILER_ENTITY"),
+    secret: ENV.fetch("ZOW_MAILER_SECRET")
+  )
 end
 ```
 
@@ -40,7 +40,8 @@ set as follows:
 settings.adapter = Carbon::ZowAdapter.new(
   entity: entity,
   secret: secret,
-  language: I18n.locale || "en")
+  language: Rosetta.locale
+)
 ```
 
 ## Contributing
