@@ -1,3 +1,3 @@
 class Carbon::ZowAdapter < Carbon::Adapter
-  VERSION = "0.4.0"
+  VERSION = {{ `shards version "#{__DIR__}"`.chomp.stringify }}
 end
